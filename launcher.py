@@ -229,7 +229,7 @@ def update(*args, **kwargs):
         debug_info = {
             'x': platformer.player_class.rect.x,
             'xv': platformer.player_class.x_speed,
-            'switch_cooldown': platformer.player_class.last_press - platformer.total_frames,
+            'switch_cooldown': max(platformer.player_class.last_press - platformer.total_frames + 9, 0),
             'y': platformer.player_class.rect.y,
             'yv': platformer.player_class.gravity,
             'movie_frame': tas_handler.frame
