@@ -68,7 +68,7 @@ class TASHandler: # v2
         # self.movie = TASMovie(self.GAME_VERSION)
         self.frame = 0
 
-        self.movie_name = "movie"
+        self.movie_name = "a"
         self.movie_filename = self.movie_name + MOVIE_FILE_EXTENSION
 
         self.save_state_class = save_state_class
