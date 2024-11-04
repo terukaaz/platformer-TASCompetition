@@ -3,6 +3,7 @@ from __future__ import annotations
 import sys
 import typing
 import copy
+from platform import platform
 
 import pygame
 
@@ -11,7 +12,6 @@ import tas2 as tas
 TO_RUN_MODULE = 'main'
 to_run_module_file_name = TO_RUN_MODULE + '.py'
 THIS_NAME = 'launcher'
-
 
 keys = None
 platformer = None
@@ -153,6 +153,8 @@ def get_pressed_init(*args, **kwargs):
         'event.get': event_get
     }
 
+    platformer.SHOW_HITBOXES = True
+
 
 def get_pressed(*args, **kwargs):
     global keys
@@ -166,7 +168,6 @@ def get_pressed(*args, **kwargs):
         (lambda ks, vs: ([keys.__setitem__(k, v) for k, v in zip(ks, vs)]))((getattr(pygame, 'K_' + tas.PLATFORMER_INPUT_MAPPING[k]) for k in tas.PLATFORMER_INPUT_MAPPING), input_.inputs)
 
     return keys
-
 
 def update(*args, **kwargs):
 
@@ -210,9 +211,18 @@ def update(*args, **kwargs):
 
         # clip hitbox debug
         for rect in platformer.rect_list:
-            width = 25
-            pygame.draw.line(platformer.big_display, (255, 0, 0), rect.topleft, rect.bottomright, width)
-            pygame.draw.line(platformer.big_display, (255, 0, 0), rect.bottomleft, rect.topright, width)
+
+            cover_rect = pygame.Rect(platformer.player_class.rect.left - 32,
+                                            platformer.player_class.rect.top - 32,
+                                            platformer.player_class.rect.width + 64,
+                                            platformer.player_class.rect.height + 64)
+
+            if rect.colliderect(cover_rect):
+                width = 25
+                pygame.draw.line(platformer.big_display, (30, 30, 30), rect.topleft, rect.bottomright, width)
+                pygame.draw.line(platformer.big_display, (30, 30, 30), rect.bottomleft, rect.topright, width)
+
+            # pygame.draw.rect(platformer.big_display, (34, 111, 23), cover_rect)
 
             # pygame.draw.rect(platformer.big_display, (255, 255, 255), rect, 1)
 
