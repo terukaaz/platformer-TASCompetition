@@ -129,7 +129,7 @@ frame_advance = tas_handler.mode != tas.MovieMode.WRITE
 # S > pygame.K_SPACE
 
 DEFAULT_CLOCK_SPEED = 60
-EXTRA_DISPLAY_HEIGHT = 100
+EXTRA_DISPLAY_HEIGHT = 120
 font: None | pygame.font.Font = None
 
 
@@ -208,6 +208,13 @@ def update(*args, **kwargs):
                 # elif event.key == pygame.K_2:
                 #     tas_handler.load_savestate(0)
 
+        # clip hitbox debug
+        for rect in platformer.rect_list:
+            width = 25
+            pygame.draw.line(platformer.big_display, (255, 0, 0), rect.topleft, rect.bottomright, width)
+            pygame.draw.line(platformer.big_display, (255, 0, 0), rect.bottomleft, rect.topright, width)
+
+            # pygame.draw.rect(platformer.big_display, (255, 255, 255), rect, 1)
 
         # debug player gravity thingy
 
@@ -235,6 +242,7 @@ def update(*args, **kwargs):
             'x': platformer.player_class.rect.x,
             'xv': platformer.player_class.x_speed,
             'switch_cooldown': max(platformer.player_class.last_press - platformer.total_frames + 9, 0),
+            'level': str(platformer.level) + '-' + str(platformer.button_clicks),
             'y': platformer.player_class.rect.y,
             'yv': platformer.player_class.gravity,
             'movie_frame': tas_handler.frame
